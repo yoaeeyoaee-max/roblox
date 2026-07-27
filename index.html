@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Roblox - Bejelentkezés</title>
+    
+    <!-- CSS fájl betöltése -->
+    <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+    <div class="container" id="app">
+        <!-- BEJELENTKEZÉSI RÉSZ -->
+        <div id="loginSection">
+            <div class="logo">
+                <h1>RO<span>BLOX</span></h1>
+                <p>Üdv újra!</p>
+            </div>
+
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="username">Felhasználónév</label>
+                    <input type="text" id="username" placeholder="Add meg a felhasználóneved" />
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Jelszó</label>
+                    <input type="password" id="password" placeholder="Add meg a jelszavad" />
+                </div>
+
+                <button type="submit" class="btn-login">Bejelentkezés</button>
+            </form>
+
+            <div class="message-box error" id="errorBox">
+                ⚠️ Hiba kód: AUTH_401 - Érvénytelen bejelentkezési adatok.
+            </div>
+            <div class="message-box success" id="successBox">
+                ✅ Sikeres bejelentkezés!
+            </div>
+
+            <div class="footer-links">
+                <a onclick="alert('🔒 Demo mód - nincs adatmentés!')">Elfelejtett jelszó?</a>
+                <a onclick="alert('🔒 Demo mód - nincs adatmentés!')">Segítség</a>
+            </div>
+
+            <div class="signup-cta">
+                Nincs még fiókod? <a onclick="alert('📝 Regisztráció - Csak demo!')">Regisztráció</a>
+            </div>
+        </div>
+
+        <!-- NAVIGÁCIÓS RÉSZ (csak sikeres login után) -->
+        <div class="nav-bar" id="navBar">
+            <div class="nav-title">📋 Navigáció</div>
+            <a onclick="showLogs()">📊 Bejelentkezési naplók megtekintése</a>
+            <a onclick="logout()">🚪 Kijelentkezés</a>
+        </div>
+
+        <!-- NAPLÓK PANEL -->
+        <div class="log-panel" id="logPanel">
+            <div style="display:flex; justify-content:space-between; margin-bottom:10px;">
+                <span style="color:#c8c8e0; font-weight:600;">📊 Bejelentkezési napló</span>
+                <span onclick="closeLogs()" style="color:#8a8aa0; cursor:pointer;">✕</span>
+            </div>
+            <div id="logEntries">
+                <!-- Ide kerülnek a naplóbejegyzések -->
+            </div>
+        </div>
+
+        <div class="demo-note">
+            🔒 <strong>BIZTONSÁGOS DEMO</strong> — A jelszavak titkosítva tárolódnak (SHA-256 hash) a böngésző memóriájában. 
+            <br>Semmi nem kerül külső szerverre.
+        </div>
+    </div>
+
+    <!-- JavaScript fájl betöltése -->
+    <script src="js/script.js"></script>
+
+</body>
+</html>
