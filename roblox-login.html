@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Roblox - Bejelentkezés</title>
+    
+    <style>
+        /* ============================================
+           CSS STYLUSOK (BENT VAN A HTML-BEN)
+           ============================================ */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Arial, sans-serif;
+        }
+
+        body {
+            background: #1a1a2e;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: #2d2d44;
+            padding: 40px;
+            border-radius: 12px;
+            width: 100%;
+            max-width: 450px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+        }
+
+        .logo {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .logo h1 {
+            color: #fff;
+            font-size: 36px;
+            font-weight: 900;
+            letter-spacing: -1px;
+        }
+
+        .logo h1 span {
+            color: #00b2ff;
+        }
+
+        .logo p {
+            color: #8a8aa0;
+            font-size: 14px;
+            margin-top: 4px;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        .form-group label {
+            display: block;
+            color: #c8c8e0;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px 14px;
+            background: #1e1e32;
+            border: 2px solid #3a3a55;
+            border-radius: 8px;
+            color: #fff;
+            font-size: 15px;
+            transition: border 0.2s;
+            outline: none;
+        }
+
+        .form-group input:focus {
+            border-color: #00b2ff;
+        }
+
+        .form-group input::placeholder {
+            color: #5a5a7a;
+        }
+
+        .btn-login {
+            width: 100%;
+            padding: 14px;
+            background: #00b2ff;
+            border: none;
+            border-radius: 8px;
+            color: #fff;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.1s;
+            margin-top: 6px;
+        }
+
+        .btn-login:hover {
+            background: #0099dd;
+        }
+
+        .btn-login:active {
+            transform: scale(0.97);
+        }
+
+        .message-box {
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 14px;
+            text-align: center;
+            margin-top: 14px;
+            display: none;
+        }
+
+        .message-box.error {
+            background: #3d1a1a;
+            border: 1px solid #ff4444;
+            color: #ff6b6b;
+        }
+
+        .message-box.error.show {
+            display: block;
+        }
+
+        .message-box.success {
+            background: #1a3d2a;
+            border: 1px solid #44ff88;
+            color: #6bffaa;
+        }
+
+        .message-box.success.show {
+            display: block;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 18px;
+            font-size: 13px;
+        }
+
+        .footer-links a {
+            color: #8a8aa0;
+            text-decoration: none;
+            transition: color 0.2s;
+            cursor: pointer;
+        }
+
+        .footer-links a:hover {
+            color: #00b2ff;
+        }
+
+        .signup-cta {
+            text-align: center;
+            margin-top: 20px;
+            color: #8a8aa0;
+            font-size: 14px;
+        }
+
+        .signup-cta a {
+            color: #00b2ff;
+            text-decoration: none;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .signup-cta a:hover {
+            text-decoration: underline;
+        }
+
+        .nav-bar {
+            display: none;
+            background: #2d2d44;
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+            border-top: 2px solid #3a3a55;
+        }
+
+        .nav-bar.show {
+            display: block;
+        }
+
+        .nav-bar a {
+            display: block;
+            color: #c8c8e0;
+            text-decoration: none;
+            padding: 10px;
+            border-radius: 6px;
+            transition: background 0.2s;
+            margin: 4px 0;
+            cursor: pointer;
+        }
+
+        .nav-bar a:hover {
+            background: #3a3a55;
+            color: #00b2ff;
+        }
+
+        .nav-bar .nav-title {
+            color: #8a8aa0;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+
+        .log-panel {
+            display: none;
+            background: #1e1e32;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 15px;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .log-panel.show {
+            display: block;
+        }
+
+        .log-panel .log-entry {
+            color: #8a8aa0;
+            font-size: 12px;
+            padding: 4px 0;
+            border-bottom: 1px solid #2d2d44;
+            font-family: 'Courier New', monospace;
+        }
+
+        .log-panel .log-entry .time {
+            color: #5a5a7a;
+        }
+
+        .log-panel .log-entry .user {
+            color: #00b2ff;
+        }
+
+        .log-panel .log-entry .status {
+            color: #ff6b6b;
+        }
+
+        .log-panel .log-entry .status.success {
+            color: #6bffaa;
+        }
+
+        .demo-note {
+            text-align: center;
+            color: #5a5a7a;
+            font-size: 12px;
+            margin-top: 20px;
+            border-top: 1px solid #3a3a55;
+            padding-top: 16px;
+        }
+
+        .log-close {
+            color: #8a8aa0;
+            cursor: pointer;
+            font-size: 18px;
+        }
+
+        .log-close:hover {
+            color: #ff6b6b;
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 25px 20px;
+            }
+            .logo h1 {
+                font-size: 28px;
+            }
+            .btn-login {
+                font-size: 16px;
+                padding: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container" id="app">
+        <!-- BEJELENTKEZÉSI RÉSZ -->
+        <div id="loginSection">
+            <div class="logo">
+                <h1>RO<span>BLOX</span></h1>
+                <p>Üdv újra!</p>
+            </div>
+
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="username">Felhasználónév</label>
+                    <input type="text" id="username" placeholder="Add meg a felhasználóneved" />
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Jelszó</label>
+                    <input type="password" id="password" placeholder="Add meg a jelszavad" />
+                </div>
+
+                <button type="submit" class="btn-login">Bejelentkezés</button>
+            </form>
+
+            <div class="message-box error" id="errorBox">
+                ⚠️ Hiba kód: AUTH_401 - Érvénytelen bejelentkezési adatok.
+            </div>
+            <div class="message-box success" id="successBox">
+                ✅ Sikeres bejelentkezés!
+            </div>
+
+            <div class="footer-links">
+                <a onclick="alert('🔒 Demo mód - nincs adatmentés!')">Elfelejtett jelszó?</a>
+                <a onclick="alert('🔒 Demo mód - nincs adatmentés!')">Segítség</a>
+            </div>
+
+            <div class="signup-cta">
+                Nincs még fiókod? <a onclick="alert('📝 Regisztráció - Csak demo!')">Regisztráció</a>
+            </div>
+        </div>
+
+        <!-- NAVIGÁCIÓS RÉSZ (csak sikeres login után) -->
+        <div class="nav-bar" id="navBar">
+            <div class="nav-title">📋 Navigáció</div>
+            <a onclick="showLogs()">📊 Bejelentkezési naplók megtekintése</a>
+            <a onclick="logout()">🚪 Kijelentkezés</a>
+        </div>
+
+        <!-- NAPLÓK PANEL -->
+        <div class="log-panel" id="logPanel">
+            <div style="display:flex; justify-content:space-between; margin-bottom:10px;">
+                <span style="color:#c8c8e0; font-weight:600;">📊 Bejelentkezési napló</span>
+                <span class="log-close" onclick="closeLogs()">✕</span>
+            </div>
+            <div id="logEntries">
+                <!-- Ide kerülnek a naplóbejegyzések -->
+            </div>
+        </div>
+
+        <div class="demo-note">
+            🔒 <strong>BIZTONSÁGOS DEMO</strong> — A jelszavak titkosítva tárolódnak (SHA-256 hash) a böngésző memóriájában. 
+            <br>Semmi nem kerül külső szerverre.
+        </div>
+    </div>
+
+    <script>
+        /* ============================================
+           JAVASCRIPT LOGIKA (BENT VAN A HTML-BEN)
+           ============================================ */
+
+        // ---------- ADATBÁZIS (memóriában) ----------
+        const userDatabase = {};
+        const loginLogs = [];
+
+        // ---------- SHA-256 HASH FÜGGVÉNY ----------
+        async function hashPassword(password) {
+            const encoder = new TextEncoder();
+            const data = encoder.encode(password);
+            const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+            const hashArray = Array.from(new Uint8Array(hashBuffer));
+            return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+        }
+
+        // ---------- ADATBÁZIS INICIALIZÁLÁSA ----------
+        async function initDatabase() {
+            const hashedPass = await hashPassword('waffwaff');
+            userDatabase['zenthebest'] = {
+                password: hashedPass,
+                created: new Date().toISOString()
+            };
+
+            const testPass = await hashPassword('teszt123');
+            userDatabase['tesztuser'] = {
+                password: testPass,
+                created: new Date().toISOString()
+            };
+            userDatabase['admin'] = {
+                password: await hashPassword('admin123'),
+                created: new Date().toISOString()
+            };
+            userDatabase['demo'] = {
+                password: await hashPassword('demo123'),
+                created: new Date().toISOString()
+            };
+            
+            console.log('✅ Adatbázis inicializálva!');
+            console.log('👤 Felhasználók:', Object.keys(userDatabase).join(', '));
+            console.log('🔑 Speciális: zenthebest / waffwaff');
+        }
+
+        // ---------- NAPLÓZÁS ----------
+        function addLogEntry(username, success, errorCode = null) {
+            const entry = {
+                time: new Date().toLocaleString('hu-HU'),
+                username: username,
+                success: success,
+                errorCode: errorCode,
+                timestamp: Date.now()
+            };
+            loginLogs.unshift(entry);
+            if (loginLogs.length > 50) loginLogs.pop();
+            renderLogs();
+        }
+
+        function renderLogs() {
+            const container = document.getElementById('logEntries');
+            if (!container) return;
+            
+            if (loginLogs.length === 0) {
+                container.innerHTML = '<div class="log-entry" style="color:#5a5a7a;">Még nincsenek naplóbejegyzések.</div>';
+                return;
+            }
+            
+            container.innerHTML = loginLogs.map(log => `
+                <div class="log-entry">
+                    <span class="time">[${log.time}]</span>
+                    <span class="user">${log.username}</span>
+                    ${log.success ? 
+                        '<span class="status success">✅ SIKERES</span>' : 
+                        `<span class="status">❌ HIBA (${log.errorCode || 'AUTH_401'})</span>`
+                    }
+                </div>
+            `).join('');
+        }
+
+        // ---------- UI ELEMEK ----------
+        let isLoggedIn = false;
+
+        const form = document.getElementById('loginForm');
+        const errorBox = document.getElementById('errorBox');
+        const successBox = document.getElementById('successBox');
+        const navBar = document.getElementById('navBar');
+        const logPanel = document.getElementById('logPanel');
+
+        // ---------- BEJELENTKEZÉS KEZELÉSE ----------
+        if (form) {
+            form.addEventListener('submit', async function(e) {
+                e.preventDefault();
+
+                const username = document.getElementById('username').value.trim();
+                const password = document.getElementById('password').value.trim();
+
+                if (errorBox) errorBox.classList.remove('show');
+                if (successBox) successBox.classList.remove('show');
+
+                if (username === '' || password === '') {
+                    if (errorBox) {
+                        errorBox.textContent = '⚠️ Hiba: Töltsd ki az összes mezőt!';
+                        errorBox.classList.add('show');
+                    }
+                    addLogEntry(username || 'ismeretlen', false, 'EMPTY_FIELDS');
+                    return;
+                }
+
+                const user = userDatabase[username];
+                if (!user) {
+                    if (errorBox) {
+                        errorBox.textContent = '❌ Hiba kód: AUTH_404 - Felhasználó nem található.';
+                        errorBox.classList.add('show');
+                    }
+                    addLogEntry(username, false, 'AUTH_404');
+                    document.getElementById('password').value = '';
+                    return;
+                }
+
+                const hashedInput = await hashPassword(password);
+                if (user.password !== hashedInput) {
+                    if (errorBox) {
+                        errorBox.textContent = '❌ Hiba kód: AUTH_401 - Érvénytelen jelszó.';
+                        errorBox.classList.add('show');
+                    }
+                    addLogEntry(username, false, 'AUTH_401');
+                    document.getElementById('password').value = '';
+                    return;
+                }
+
+                // ✅ SIKERES BEJELENTKEZÉS
+                addLogEntry(username, true);
+                
+                if (successBox) {
+                    successBox.textContent = `✅ Sikeres bejelentkezés! Üdv, ${username}!`;
+                    successBox.classList.add('show');
+                }
+
+                if (navBar) navBar.classList.add('show');
+                isLoggedIn = true;
+
+                document.getElementById('username').value = '';
+                document.getElementById('password').value = '';
+
+                if (errorBox) errorBox.classList.remove('show');
+
+                if (username === 'zenthebest') {
+                    setTimeout(() => {
+                        if (successBox) {
+                            successBox.textContent = `✅ Speciális hozzáférés engedélyezve! Üdv, ${username}! 🎮`;
+                            successBox.classList.add('show');
+                        }
+                    }, 500);
+                }
+
+                setTimeout(() => {
+                    showLogs();
+                }, 1500);
+            });
+        }
+
+        // ---------- NAPLÓK MUTATÁSA ----------
+        function showLogs() {
+            if (!isLoggedIn) {
+                alert('❌ Először jelentkezz be!');
+                return;
+            }
+            if (logPanel) {
+                logPanel.classList.add('show');
+                renderLogs();
+            }
+        }
+
+        function closeLogs() {
+            if (logPanel) {
+                logPanel.classList.remove('show');
+            }
+        }
+
+        // ---------- KIJELENTKEZÉS ----------
+        function logout() {
+            isLoggedIn = false;
+            if (navBar) navBar.classList.remove('show');
+            if (logPanel) logPanel.classList.remove('show');
+            if (successBox) successBox.classList.remove('show');
+            if (errorBox) errorBox.classList.remove('show');
+            
+            document.getElementById('username').value = '';
+            document.getElementById('password').value = '';
+            
+            if (successBox) {
+                successBox.textContent = '👋 Sikeresen kijelentkeztél!';
+                successBox.classList.add('show');
+                setTimeout(() => {
+                    successBox.classList.remove('show');
+                }, 2000);
+            }
+        }
+
+        // ---------- GÉPELÉSRE ELTŰNŐ HIBA ----------
+        document.querySelectorAll('input').forEach(input => {
+            input.addEventListener('input', () => {
+                if (errorBox) errorBox.classList.remove('show');
+                if (successBox) successBox.classList.remove('show');
+            });
+        });
+
+        // ---------- ESC GOMB ----------
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeLogs();
+            }
+        });
+
+        // ---------- INDÍTÁS ----------
+        initDatabase();
+
+        console.log('📋 Használható felhasználók:');
+        console.log('  - zenthebest / waffwaff (speciális)');
+        console.log('  - tesztuser / teszt123');
+        console.log('  - admin / admin123');
+        console.log('  - demo / demo123');
+    </script>
+
+</body>
+</html>
